@@ -1,0 +1,38 @@
+package test; // belongs to test package
+
+import java.util.Random; // to generate random numbers
+
+public class RandomSearchStrategy implements SearchStrategy {
+	private int cellCounter; // counts scanned cells
+
+	@Override
+	public int[][] search(int[][] grid, int[][] coordinates) {
+		cellCounter = 0; // reset
+		int totalShips = 0; // how many found so far
+		boolean[][] visited = new boolean[25][25]; // track visited cells
+
+		// keep picking random cells until we find 8 ship parts
+		while (totalShips < 8) {
+			int randomX = new Random().nextInt(0, 25); // random row
+			int randomY = new Random().nextInt(0, 25); // random col
+
+			// only check if cell is not visited before
+			if (!visited[randomX][randomY]) {
+				if (grid[randomX][randomY] == 1) { // found ship
+					coordinates[totalShips][0] = randomX; // save X
+					coordinates[totalShips][1] = randomY; // save Y
+					totalShips++; // increase found count
+				}
+				visited[randomX][randomY] = true; // mark visited
+				cellCounter++; // count the attempt
+			}
+		}
+		return coordinates; // return all ship coords
+	}
+
+	@Override
+	public int getCellCount() {
+		// how many cells we randomly checked
+		return cellCounter;
+	}
+}
