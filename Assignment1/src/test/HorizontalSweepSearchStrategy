@@ -1,0 +1,31 @@
+package test; // part of test package
+
+public class HorizontalSweepSearchStrategy implements SearchStrategy {
+	private int cellCounter; // keeps track of cells scanned
+
+	@Override
+	public int[][] search(int[][] grid, int[][] coordinates) {
+		int r = 0; // number of ship coordinates found so far
+		cellCounter = 0; // reset counter
+
+		// loop through rows one by one
+		for (int i = 0; i < grid.length && r < 8; i++) {
+			// loop through each column of row
+			for (int j = 0; j < grid[0].length && r < 8; j++) {
+				if (grid[i][j] == 1) { // if ship exists
+					coordinates[r][0] = i; // save X
+					coordinates[r][1] = j; // save Y
+					r++; // move to next slot
+				}
+				cellCounter++; // each cell is counted regardless
+			}
+		}
+		return coordinates; // return found coordinates
+	}
+
+	@Override
+	public int getCellCount() {
+		// return cells searched in sweep
+		return cellCounter;
+	}
+}
